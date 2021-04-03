@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learing_test/course.dart';
 import 'package:learing_test/index.dart';
 import 'package:learing_test/login.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'index': (context) => index(),
         '/': (context) => login(),
+        'course': (context) => course(),
       },
     );
   }

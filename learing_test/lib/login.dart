@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:learing_test/Model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class login extends StatefulWidget {
   @override
@@ -7,6 +9,7 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
+  User user;
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _pswController = new TextEditingController();
   GlobalKey _formKey = new GlobalKey<FormState>();
@@ -77,6 +80,13 @@ class _loginState extends State<login> {
     );
   }
 
+//将用户的ID进行保存，后面的访问课程的接口要用
+  _memorry(User user) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("id", user.id);
+  }
+
+//登录接口访问
   loadDataByDio() async {
     try {
       Response response;
@@ -89,6 +99,13 @@ class _loginState extends State<login> {
 
       if (response.statusCode == 200) {
         Navigator.pushNamed(context, 'index');
+        setState(() {
+          this.user = User.fromJson(response.data['data']);
+        });
+        // print(response.data['data']);
+        print(user.id);
+        _memorry(user);
+        // print(response.data['data']['email']);
       } else {
         Navigator.pushNamed(context, '/');
       }
